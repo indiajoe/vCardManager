@@ -43,9 +43,9 @@ class vCard(dict):
                     # Parameters are inFormat PARAM=VALUE. OR simply VALUE when PARAM is TYPE in version 2.1
                     for parval in LineDic['PARAMS']: 
                         if len(parval.split('=')) > 1 :
-                            ParamsDic.setdefault(parval.split('=')[0],[]).append(*parval.split('=')[1].split(','))
+                            ParamsDic.setdefault(parval.split('=')[0],[]).extend(parval.split('=')[1].split(','))
                         else:  # Version 2.1 without TYPE key
-                            ParamsDic.setdefault('TYPE',[]).append(*parval.split('=')[0].split(','))
+                            ParamsDic.setdefault('TYPE',[]).extend(parval.split('=')[0].split(','))
                 else :
                     print('vCard Version {0}'.format(self.VERSION))
                     raise NotImplementedError
@@ -71,8 +71,8 @@ class vCard(dict):
                     else :
                         ParStringList+= ['{0}={1}'.format(par,','.join(ParamDic[par]))]  # Append to Parameter list
                 
-                # Append everything to Newline
-                String += '{0}{1}:{2}'.format(entry,';'.join(['']+ParStringList),Data)+'\n'
+                # Append everything to Newline  #[''] is a hack to prefix ; if and only if ParStringList is not empty
+                String += '{0}{1}:{2}'.format(entry,';'.join(['']+ParStringList),Data)+'\n' 
 
                 if ExtraLineToAppend is not None: String += ExtraLineToAppend
                 
