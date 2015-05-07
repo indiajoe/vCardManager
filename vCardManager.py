@@ -32,7 +32,7 @@ class vCard(dict):
             elif LineDic['KEY'].upper() == 'LABEL' : # In Version (2.1 and 3.0) it belongs to previous adress
                 # Add the param LABEL to the previous ADR key in the vCard
                 try :
-                    self['ADR'][-1][0]['LABEL'] = LineDic['DATA']
+                    self['ADR'][-1][0]['LABEL'] = [ '"{0}"'.format(LineDic['DATA']) ]
                 except KeyError:
                     print('ERROR: LABEL Card without a previous ADR card in the input vCard')
                     print('Discarding...: '+line)
@@ -68,7 +68,7 @@ class vCard(dict):
                         ParStringList+= ParamDic[par]  # Append to Parameter list without the TYPE= Key word
                     elif (self.VERSION in set((2.1,3.0))) and (entry == 'ADR') and (par == 'LABEL'):
                         # Skip this LABEL par for now and append it as a new line in end
-                        ExtraLineToAppend = '{0}{1}:{2}\n'.format(par,';'.join(['']+ParStringList),ParamDic[par])
+                        ExtraLineToAppend = '{0}{1}:{2}\n'.format(par,';'.join(['']+ParStringList),ParamDic[par][0].strip('"'))
                     else :
                         ParStringList+= ['{0}={1}'.format(par,','.join(ParamDic[par]))]  # Append to Parameter list
                 
