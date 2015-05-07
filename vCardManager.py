@@ -106,6 +106,8 @@ class vCardList(list):
                     vCardLine = False 
                     # Load the Vcard !!
                     self.append( vCard(vCardEntryList=vCardEntryList) )
+                elif line[0] == ' ': # Continuation of previous line
+                    vCardEntryList[-1] += line[1:]
                 elif vCardLine : # If vCardLine is True 
                     vCardEntryList.append(line)
                     
