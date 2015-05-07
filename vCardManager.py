@@ -51,8 +51,9 @@ class vCard(dict):
                     raise NotImplementedError
 
                 self.setdefault(LineDic['KEY'],[]).append([ParamsDic,LineDic['DATA']])   # Format [{PARAMS},DATA]
-                # Update the order list
-                self.ContentList.append(LineDic['KEY'])
+                # Update the order list if the KEY is not already present in the List
+                if LineDic['KEY'] not in self.ContentList : 
+                    self.ContentList.append(LineDic['KEY'])
                 
     def __str__(self):
         """ Print the vCard in its output version format """
